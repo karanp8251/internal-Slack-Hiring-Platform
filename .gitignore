@@ -1,0 +1,18 @@
+# Node modules
+node_modules/
+dist/
+
+# Java / Maven
+backend/target/
+.mvn/
+*.log
+
+# Runtimes and generated
+runtimes/
+.env
+
+# IDEs and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
