@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: slack_hiring_db
+    environment:
+      POSTGRES_USER: ${PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${PGPASSWORD:-Karan@8251}
+      POSTGRES_DB: ${PGDATABASE:-Slack Hiring}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: slack_hiring_app
+    ports:
+      - "8080:8080"
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGDATABASE=${PGDATABASE:-Slack Hiring}
+      - PGUSER=${PGUSER:-postgres}
+      - PGPASSWORD=${PGPASSWORD:-Karan@8251}
+      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
+      - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_SIGNING_SECRET=${SLACK_SIGNING_SECRET}
+      - SLACK_REDIRECT_URI=${SLACK_REDIRECT_URI}
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
